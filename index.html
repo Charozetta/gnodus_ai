@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gnodus is an early-stage research-driven company exploring how AI systems can use expert knowledge without losing the context, evidence and conditions that make it reliable.">
+  <title>Gnodus — Knowledge quality for expert AI</title>
+
+  <style>
+    :root{
+      --ink:#18222F;
+      --ink-2:#1E2A3B;
+      --paper:#FBFAF7;
+      --paper-soft:#F4F2EC;
+      --bronze:#B49B73;
+      --bronze-deep:#8A6E4B;
+      --muted:rgba(249,247,242,.74);
+      --line:rgba(249,247,242,.18);
+      --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+      --sans:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:var(--ink);color:var(--paper)}
+    body{font-family:var(--sans);-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+
+    .page{
+      position:relative;
+      min-height:100vh;
+      min-height:100svh;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      background:
+        radial-gradient(circle at 85% 20%,rgba(180,155,115,.12),transparent 24%),
+        linear-gradient(135deg,var(--ink) 0%,var(--ink-2) 58%,#243447 100%);
+    }
+
+    .bg-video{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:.43;
+      filter:saturate(.72) contrast(1.04);
+    }
+
+    .wash{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg,rgba(24,34,47,.96) 0%,rgba(24,34,47,.90) 42%,rgba(24,34,47,.64) 72%,rgba(24,34,47,.74) 100%),
+        linear-gradient(180deg,rgba(24,34,47,.20),rgba(24,34,47,.72));
+    }
+
+    .grain{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:.12;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+      background-size:36px 36px;
+      mask-image:linear-gradient(to right,transparent 0%,black 45%,black 100%);
+    }
+
+    .shell{
+      width:min(1180px,calc(100% - 40px));
+      margin:0 auto;
+      position:relative;
+      z-index:2;
+    }
+
+    header{
+      padding:26px 0;
+      border-bottom:1px solid var(--line);
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:13px;
+    }
+
+    .mark{
+      width:38px;
+      height:38px;
+      border:1px solid rgba(249,247,242,.32);
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      font-family:var(--serif);
+      font-size:1.05rem;
+      font-weight:700;
+      background:rgba(255,255,255,.035);
+      backdrop-filter:blur(10px);
+    }
+
+    .brand-copy strong{
+      display:block;
+      font-family:var(--serif);
+      font-size:1.05rem;
+      letter-spacing:.02em;
+    }
+
+    .brand-copy span{
+      display:block;
+      margin-top:2px;
+      color:rgba(249,247,242,.56);
+      font-size:.75rem;
+    }
+
+    .linkedin{
+      font-size:.88rem;
+      color:rgba(249,247,242,.78);
+      border-bottom:1px solid rgba(180,155,115,.72);
+      padding-bottom:3px;
+      transition:.2s;
+    }
+
+    .linkedin:hover{color:#fff;border-color:#fff}
+
+    main{
+      flex:1;
+      display:flex;
+      align-items:center;
+      padding:72px 0 82px;
+    }
+
+    .content{
+      max-width:790px;
+    }
+
+    .eyebrow{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:var(--bronze);
+      text-transform:uppercase;
+      font-size:.72rem;
+      font-weight:700;
+      letter-spacing:.22em;
+    }
+
+    .eyebrow:before{
+      content:"";
+      width:42px;
+      height:1px;
+      background:var(--bronze);
+    }
+
+    h1{
+      margin:26px 0 26px;
+      font-family:var(--serif);
+      font-size:clamp(3.5rem,7.5vw,7.2rem);
+      line-height:.96;
+      letter-spacing:-.045em;
+      font-weight:600;
+      max-width:920px;
+    }
+
+    .lead{
+      max-width:720px;
+      font-size:clamp(1.2rem,2vw,1.55rem);
+      line-height:1.5;
+      color:rgba(249,247,242,.84);
+    }
+
+    .statement{
+      max-width:690px;
+      margin-top:26px;
+      font-size:1.02rem;
+      line-height:1.8;
+      color:rgba(249,247,242,.67);
+    }
+
+    .status{
+      margin-top:42px;
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 16px;
+      border:1px solid rgba(180,155,115,.46);
+      background:rgba(24,34,47,.38);
+      backdrop-filter:blur(10px);
+      border-radius:999px;
+      color:rgba(249,247,242,.90);
+      font-size:.88rem;
+    }
+
+    .status-dot{
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:var(--bronze);
+      box-shadow:0 0 0 5px rgba(180,155,115,.10);
+      animation:pulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse{
+      0%,100%{transform:scale(1);opacity:1}
+      50%{transform:scale(.78);opacity:.65}
+    }
+
+    .actions{
+      margin-top:30px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:18px;
+      align-items:center;
+    }
+
+    .primary{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:13px 18px;
+      border-radius:8px;
+      background:var(--paper);
+      color:var(--ink);
+      font-size:.9rem;
+      font-weight:650;
+      transition:.2s;
+    }
+
+    .primary:hover{transform:translateY(-2px)}
+
+    .secondary{
+      color:var(--bronze);
+      font-size:.9rem;
+      padding:11px 2px;
+      border-bottom:1px solid rgba(180,155,115,.42);
+      transition:.2s;
+    }
+
+    .secondary:hover{color:#fff;border-color:#fff}
+
+    footer{
+      position:relative;
+      z-index:2;
+      border-top:1px solid var(--line);
+      padding:22px 0 28px;
+      color:rgba(249,247,242,.48);
+      font-size:.76rem;
+    }
+
+    .footer-row{
+      display:flex;
+      justify-content:space-between;
+      gap:24px;
+      flex-wrap:wrap;
+    }
+
+    .footer-row a:hover{color:#fff}
+
+    @media(max-width:720px){
+      .shell{width:min(100% - 28px,1180px)}
+      header{padding:18px 0}
+      .brand-copy span{display:none}
+      main{padding:56px 0 64px}
+      h1{font-size:clamp(3.1rem,16vw,5.4rem)}
+      .lead{font-size:1.12rem}
+      .statement{font-size:.96rem}
+      .linkedin{font-size:.8rem}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation:none!important;scroll-behavior:auto!important}
+      .bg-video{display:none}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <video class="bg-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+      <source src="assets/gnodus_medical_ai.mp4" type="video/mp4">
+    </video>
+    <div class="wash"></div>
+    <div class="grain"></div>
+
+    <header>
+      <div class="shell nav">
+        <a class="brand" href="/" aria-label="Gnodus home">
+          <span class="mark">G</span>
+          <span class="brand-copy">
+            <strong>Gnodus</strong>
+            <span>Research-driven knowledge systems</span>
+          </span>
+        </a>
+
+        <a class="linkedin" href="https://www.linkedin.com/company/gnodus" target="_blank" rel="noopener noreferrer">
+          LinkedIn ↗
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <div class="shell">
+        <div class="content">
+          <div class="eyebrow">Early-stage research-driven company</div>
+
+          <h1>From information access to knowledge quality.</h1>
+
+          <div class="lead">
+            Building the knowledge layer for AI systems that need to be understood, challenged and trusted.
+          </div>
+
+          <div class="statement">
+            Gnodus is exploring how AI systems can use expert knowledge without losing the context,
+            evidence and conditions that make that knowledge reliable. Medicine is the first research
+            and application domain.
+          </div>
+
+          <div class="status">
+            <span class="status-dot"></span>
+            <span>Website in development · more coming soon</span>
+          </div>
+
+          <div class="actions">
+            <a class="primary" href="https://www.linkedin.com/company/gnodus" target="_blank" rel="noopener noreferrer">
+              Follow Gnodus on LinkedIn ↗
+            </a>
+            <a class="secondary" href="https://www.juliakewitz.com" target="_blank" rel="noopener noreferrer">
+              Julia Kewitz ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="shell footer-row">
+        <span>© <span id="year"></span> Gnodus</span>
+        <a href="https://www.gnodus.ai">www.gnodus.ai</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
